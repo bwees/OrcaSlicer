@@ -1352,11 +1352,12 @@ void MachineInfoPanel::on_show_release_note(wxMouseEvent &event)
 UpgradePanel::UpgradePanel(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style)
     :wxPanel(parent, id, pos, size, style)
 {
-    this->SetBackgroundColour(wxColour(238, 238, 238));
+    this->SetBackgroundColour(wxColour(255, 255, 255));
 
     auto m_main_sizer = new wxBoxSizer(wxVERTICAL);
 
     m_scrolledWindow = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL);
+    m_scrolledWindow->SetBackgroundColour(wxColour(255, 255, 255));
     m_scrolledWindow->SetScrollRate(5, 25);
 
     m_machine_list_sizer = new wxBoxSizer(wxVERTICAL);
