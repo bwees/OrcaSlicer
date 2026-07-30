@@ -640,6 +640,11 @@ public:
     // wxWidgets override to get an event on open files.
     void            MacOpenFiles(const wxArrayString &fileNames) override;
     void            MacOpenURL(const wxString& url) override;
+    // wxWidgets 3.3 + macOS Tahoe drop the kAEGetURL Apple Event before
+    // wxNSAppController dispatches it on cold launch (see #13119). Re-install
+    // our own handler at the end of applicationWillFinishLaunching: so
+    // OrcaSlicer wins the "last writer" race for that event.
+    void            OSXOnWillFinishLaunching() override;
 #endif /* __APPLE */
 
     Sidebar&             sidebar();

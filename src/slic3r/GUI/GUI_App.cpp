@@ -1071,6 +1071,11 @@ void GUI_App::post_init()
     // Sets window property to mainframe so other instances can indentify it.
     OtherInstanceMessageHandler::init_windows_properties(mainframe, m_instance_hash_int);
 #endif //WIN32
+#ifdef __APPLE__
+    // Plater is now live; deliver any orcaslicer:// URL that arrived during
+    // cold launch and unblock direct dispatch for future URLs.
+    flush_mac_deep_link_queue();
+#endif
 }
 
 wxDEFINE_EVENT(EVT_ENTER_FORCE_UPGRADE, wxCommandEvent);
@@ -8993,6 +8998,15 @@ void GUI_App::MacOpenURL(const wxString& url)
     if (url.empty())
         return;
     start_download(into_u8(url));
+}
+
+void GUI_App::OSXOnWillFinishLaunching()
+{
+    wxApp::OSXOnWillFinishLaunching();
+    // wxNSAppController has just installed its kAEGetURL handler; install
+    // ours over it so we receive the cold-launch URL even when wxWidgets's
+    // dispatch path is dropped on macOS Tahoe.
+    register_mac_deep_link_handler();
 }
 
 // wxWidgets override to get an event on open files.
